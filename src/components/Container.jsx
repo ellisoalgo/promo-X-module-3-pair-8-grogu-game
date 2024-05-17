@@ -1,22 +1,23 @@
 import "../styles/Container.scss";
 
-const Container = () => {
+const Container = ({cookies, eggs, frogs}) => {
+
+  const renderCookies = cookies.map((cookie, index) => <div className="goods-item" key={index}>{cookie}</div>)
+  
+  const renderEggs = eggs.map((egg, index) => <div className="goods-item" key={index}>{egg}</div>)
+  
+  const renderFrogs = frogs.map((frog, index) => <div className="goods-item" key={index}>{frog}</div>)
+
   return (
     <>
-    <section className="goods-container">
-            <div className="goods-item">🍪</div>
-            <div className="goods-item">🍪</div>
-            <div className="goods-item">🍪</div>
+        <section className="goods-container">
+          {renderCookies}
         </section>
         <section className="goods-container">
-            <div className="goods-item">🥚</div>
-            <div className="goods-item">🥚</div>
-            <div className="goods-item">🥚</div>
+          {renderEggs}
         </section>
         <section className="goods-container">
-            <div className="goods-item">🐸</div>
-            <div className="goods-item">🐸</div>
-            <div className="goods-item">🐸</div>
+          {renderFrogs}
     </section>
     </>
   )
