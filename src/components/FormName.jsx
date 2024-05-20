@@ -1,7 +1,7 @@
 import '../styles/FormName.scss'
 import { useState } from 'react';
 
-const FormName = ({setPlayer, player, toggleClass}) => {
+const FormName = ({setPlayer, player, toggleClass, isHidden}) => {
 
   const handleChange = (ev)=> {
     setPlayer(ev.target.value)

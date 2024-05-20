@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/App.scss";
 import Header from "./Header";
 import Board from "./Board";
@@ -18,53 +18,92 @@ function App() {
   const [player, setPlayer] = useState("");
   const [isHidden, setIsHidden] = useState(false); //clase hidden
 
-
-//   function getRandomNumber(max) {
-//     max = 4;
-//     return Math.ceil(Math.random() * max);
-//   }
+  //   function getRandomNumber(max) {
+  //     max = 4;
+  //     return Math.ceil(Math.random() * max);
+  //   }
+  useEffect(() => {
+    if (grogu === 6) {
+      setGameStatus(`¡Has perdido, ${player}!`);
+      toggleClass();
+      //desactivar botones
+    } else if (
+      cookies.length === 0 &&
+      eggs.length === 0 &&
+      frogs.length === 0
+    ) {
+      setGameStatus(`¡Has ganado, ${player}!`);
+      toggleClass();
+    }
+    //si todos los arrays de mercancias === 0, has ganado
+  }, [grogu, cookies, eggs, frogs]);
 
   const handleRollDice = () => {
-   const value = Math.floor(Math.random() * 4);
+    const value = Math.floor(Math.random() * 4);
     setDice(value);
     console.log(dice);
 
     if (dice === 0) {
-      const copyCookies = [...cookies]
-      copyCookies.splice(1,1)
-      setCookies([...copyCookies])
+      const copyCookies = [...cookies];
+      copyCookies.splice(0, 1);
+      setCookies([...copyCookies]);
       //comprobación de length array - cambiar mensaje por ejemplo
       //HAY QUE LIMITAR A 3 VECES
-      setGameStatus(`¡Has descargado una galleta, ${player}!`)
+      setGameStatus(`¡Has descargado una galleta, ${player}!`);
       console.log("¡Has descargado una galleta!");
+      if (cookies.length === 0) {
+        setGameStatus(
+          `Ya no te quedan más 🍪, ${player}, tira el dado de nuevo.`
+        );
+      }
     } else if (dice === 1) {
-      const copyEggs = [...eggs]
-      copyEggs.splice(1,1)
-      setEggs([...copyEggs])
+      const copyEggs = [...eggs];
+      copyEggs.splice(0, 1);
+      setEggs([...copyEggs]);
       //comprobación de length array - cambiar mensaje por ejemplo
       //HAY QUE LIMITAR A 3 VECES
-      setGameStatus(`¡Has descargado un huevo, ${player}!`)
+      setGameStatus(`¡Has descargado un huevo, ${player}!`);
       console.log("¡Has descargado un huevo!");
+      if (eggs.length === 0) {
+        setGameStatus(
+          `Ya no te quedan más 🥚, ${player}, tira el dado de nuevo.`
+        );
+      }
     } else if (dice === 2) {
-      const copyFrogs = [...frogs]
-      copyFrogs.splice(1,1)
-      setFrogs([...copyFrogs])
+      const copyFrogs = [...frogs];
+      copyFrogs.splice(0, 1);
+      setFrogs([...copyFrogs]);
       //comprobación de length array - cambiar mensaje por ejemplo
       //HAY QUE LIMITAR A 3 VECES
-      setGameStatus(`¡Has descargado una rana, ${player}!`)
+      setGameStatus(`¡Has descargado una rana, ${player}!`);
       console.log("¡Has descargado una rana!");
+      if (frogs.length === 0) {
+        setGameStatus(
+          `Ya no te quedan más 🐸, ${player}, tira el dado de nuevo.`
+        );
+      }
     } else if (dice === 3) {
       //cuando grogu === 6 -> apagar boton lanzar dado
-      setGrogu(grogu +1) //añadir 1 al valor de grogu
-      setGameStatus(`¡Cuidado, ${player}, Grugo ha avanzado una casilla!`)
+      setGrogu(grogu + 1); //añadir 1 al valor de grogu
+      setGameStatus(`¡Cuidado, ${player}, Grugo ha avanzado una casilla!`);
       console.log("¡Grugo ha avanzado una casilla!");
     }
     //comprobación game status: mirar length de cada array.
-
   };
 
   const toggleClass = () => {
     setIsHidden(!isHidden);
+  };
+
+  //función de reseteo total
+
+  const restartGame = () => {
+    setGrogu(0);
+    setCookies(["🍪", "🍪", "🍪"]);
+    setEggs(["🥚", "🥚", "🥚"]);
+    setFrogs(["🐸", "🐸", "🐸"]);
+    setDice(null);
+    setGameStatus(`Empezamos, ${player}!`);
   };
 
   return (
@@ -72,11 +111,20 @@ function App() {
       <div className="page">
         <Header />
         <main className="page">
-          <FormName setPlayer={setPlayer} player={player} toggleClass={toggleClass}/>
-          <Board groguPosition={grogu}/>
-          <Dice handleRollDice={handleRollDice} gameStatus={gameStatus} isHidden={isHidden}/>
-          <Container cookies={cookies} eggs={eggs} frogs={frogs}/>
-          <BtnReset />
+          <FormName
+            setPlayer={setPlayer}
+            player={player}
+            toggleClass={toggleClass}
+            isHidden={isHidden}
+          />
+          <Board groguPosition={grogu} />
+          <Dice
+            handleRollDice={handleRollDice}
+            gameStatus={gameStatus}
+            isHidden={!isHidden}
+          />
+          <Container cookies={cookies} eggs={eggs} frogs={frogs} />
+          <BtnReset restartGame={restartGame} />
         </main>
       </div>
     </>

@@ -8,7 +8,7 @@ const Dice = ({ handleRollDice, gameStatus, isHidden }) => {
   };
 
   return (
-    <section>
+    <section className="section_dice" >
       <button className={`dice ${isHidden ? 'hidden' : ''}`} onClick={handleDice}>
         Lanzar Dado
       </button>{" "}
