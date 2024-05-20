@@ -9,7 +9,7 @@ const FormName = ({setPlayer, player, toggleClass, isHidden}) => {
  
 
   return (
-    <form className={`form ${isHidden ? 'hidden' : ''}`} onSubmit={(ev)=>{ev.preventDefault()}}>
+    <form className={`form ${isHidden ? 'hiddenName' : ''}`} onSubmit={(ev)=>{ev.preventDefault()}}>
         <label htmlFor="name">Introduce tu nombre:</label>
         <input type="text" name="name" id="name" onChange={handleChange} value={player}/>
         <button onClick={toggleClass} >Start!</button>

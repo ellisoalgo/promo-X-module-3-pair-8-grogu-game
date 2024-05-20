@@ -35,12 +35,11 @@ function App() {
       setGameStatus(`¡Has ganado, ${player}!`);
       toggleClass();
     }
-    //si todos los arrays de mercancias === 0, has ganado
   }, [grogu, cookies, eggs, frogs]);
 
   const handleRollDice = () => {
-    const value = Math.floor(Math.random() * 4);
-    setDice(value);
+    const dice = Math.floor(Math.random() * 4);
+    //setDice(value);
     console.log(dice);
 
     if (dice === 0) {
@@ -88,6 +87,7 @@ function App() {
       setGameStatus(`¡Cuidado, ${player}, Grugo ha avanzado una casilla!`);
       console.log("¡Grugo ha avanzado una casilla!");
     }
+    console.log("has ejecutado la func");
     //comprobación game status: mirar length de cada array.
   };
 
