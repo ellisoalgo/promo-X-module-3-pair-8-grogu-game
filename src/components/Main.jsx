@@ -15,7 +15,8 @@ const Main = () => {
   const [dice, setDice] = useState(null); //OJO: es un null (sin valor) pero luego tendrá valor numérico, almacenará el número random
   const [gameStatus, setGameStatus] = useState("En curso");
   const [player, setPlayer] = useState("");
-  const [isHidden, setIsHidden] = useState(false); //clase hidden
+  const [isHidden, setIsHidden] = useState(false); //clase hidden name
+  const [isHiddenDice, setIsHiddenDice] = useState(true);
 
   //   function getRandomNumber(max) {
   //     max = 4;
@@ -24,7 +25,7 @@ const Main = () => {
   useEffect(() => {
     if (grogu === 6) {
       setGameStatus(`¡Has perdido, ${player}!`);
-      toggleClass();
+      setIsHiddenDice(true)
       //desactivar botones
     } else if (
       cookies.length === 0 &&
@@ -32,7 +33,7 @@ const Main = () => {
       frogs.length === 0
     ) {
       setGameStatus(`¡Has ganado, ${player}!`);
-      toggleClass();
+      setIsHiddenDice(true)
     }
   }, [grogu, cookies, eggs, frogs]);
 
@@ -45,8 +46,6 @@ const Main = () => {
       const copyCookies = [...cookies];
       copyCookies.splice(0, 1);
       setCookies([...copyCookies]);
-      //comprobación de length array - cambiar mensaje por ejemplo
-      //HAY QUE LIMITAR A 3 VECES
       setGameStatus(`¡Has descargado una galleta, ${player}!`);
       console.log("¡Has descargado una galleta!");
       if (cookies.length === 0) {
@@ -58,8 +57,6 @@ const Main = () => {
       const copyEggs = [...eggs];
       copyEggs.splice(0, 1);
       setEggs([...copyEggs]);
-      //comprobación de length array - cambiar mensaje por ejemplo
-      //HAY QUE LIMITAR A 3 VECES
       setGameStatus(`¡Has descargado un huevo, ${player}!`);
       console.log("¡Has descargado un huevo!");
       if (eggs.length === 0) {
@@ -71,8 +68,6 @@ const Main = () => {
       const copyFrogs = [...frogs];
       copyFrogs.splice(0, 1);
       setFrogs([...copyFrogs]);
-      //comprobación de length array - cambiar mensaje por ejemplo
-      //HAY QUE LIMITAR A 3 VECES
       setGameStatus(`¡Has descargado una rana, ${player}!`);
       console.log("¡Has descargado una rana!");
       if (frogs.length === 0) {
@@ -81,28 +76,24 @@ const Main = () => {
         );
       }
     } else if (dice === 3) {
-      //cuando grogu === 6 -> apagar boton lanzar dado
       setGrogu(grogu + 1); //añadir 1 al valor de grogu
       setGameStatus(`¡Cuidado, ${player}, Grugo ha avanzado una casilla!`);
       console.log("¡Grugo ha avanzado una casilla!");
     }
     console.log("has ejecutado la func");
-    //comprobación game status: mirar length de cada array.
-  };
-
-  const toggleClass = () => {
-    setIsHidden(!isHidden);
   };
 
   //función de reseteo total
-
   const restartGame = () => {
     setGrogu(0);
     setCookies(["🍪", "🍪", "🍪"]);
     setEggs(["🥚", "🥚", "🥚"]);
     setFrogs(["🐸", "🐸", "🐸"]);
     setDice(null);
-    setGameStatus(`Empezamos, ${player}!`);
+    setGameStatus(`Vuelve a loguear!`);
+    setIsHidden(false)
+    setPlayer("");
+    setIsHiddenDice(true);
   };
 
   return (
@@ -110,14 +101,17 @@ const Main = () => {
             <FormName
             setPlayer={setPlayer}
             player={player}
-            toggleClass={toggleClass}
             isHidden={isHidden}
+            setIsHidden={setIsHidden}
+            setIsHiddenDice={setIsHiddenDice}
+            setGameStatus={setGameStatus}
           />
           <Board groguPosition={grogu} />
           <Dice
             handleRollDice={handleRollDice}
             gameStatus={gameStatus}
-            isHidden={!isHidden}
+            isHiddenDice={isHiddenDice}
+            setIsHiddenDice={setIsHiddenDice}
           />
           <Container cookies={cookies} eggs={eggs} frogs={frogs} />
           <BtnReset restartGame={restartGame} />
