@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom"
+import "../styles/Footer.scss"
 
 const Footer = () => {
 
   return (
     <footer className="footer">
         <nav>
-            <ul>
+            <ul className="footer__menu">
                 <li className="footer__menu-item">
                     <NavLink className="footer__menu-link" to='/'>A jugar</NavLink>
                 </li>
